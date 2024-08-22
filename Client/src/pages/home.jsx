@@ -2,7 +2,7 @@ import SideBar from "../components/sideBar"
 import ChatBox from "../components/ChatBox"
 const home = () => {
   return (
-    <div className="flex flex-row justify-center items-center min-w-80 bg-black p-6">
+    <div className="flex flex-row justify-center items-center bg-black p-6">
     <SideBar/>
     <ChatBox/>
     </div>
