@@ -1,4 +1,4 @@
-import CheckComponent from "../components/checkComponent"
+import CheckComponent from "../components/SignUp/checkComponent";
 
 const SignUp = () => {
   return (
