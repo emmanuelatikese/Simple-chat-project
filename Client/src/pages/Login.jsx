@@ -1,4 +1,5 @@
 
+import {Link} from "react-router-dom"
 const Login = () => {
   return (
     <div className="shadow-black shadow-sm rounded-lg min-w-96 p-8 flex flex-col justify-center gap-8 mx-auto items-center bg-black">
@@ -27,7 +28,7 @@ const Login = () => {
     </svg>
     <input type="password" className="grow" placeholder="Password" required/>
     </label>
-    <p className="ml-0 text-sm font-bold">{"Don't"} have an account? Click <a href="/">here</a></p>
+    <Link className="ml-0 text-sm font-bold hover:text-white" to={"/SignUp"} >{"Don't"} have an account? Click Here</Link>
     <button className="btn btn-neutral w-60">Login</button>
     </div>
   )
