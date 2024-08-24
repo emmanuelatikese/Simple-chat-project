@@ -2,6 +2,7 @@
 import { useState } from "react";
 import CheckComponent from "../components/SignUp/checkComponent";
 import {Link} from "react-router-dom";
+import SignupHooks from "../hooks/SignupHooks";
 
 const SignUp = () => {
   const [Inputs, setInputs] = useState({
@@ -13,12 +14,21 @@ const SignUp = () => {
     gender: "male",
   })
 
+  const {loading, signUpHandler} = SignupHooks();
+
   const GenderHandler = (sex) => setInputs({...Inputs, gender: sex})
 
-  const onSubmit = (e) =>{
+  const onSubmit = async(e) =>{
     e.preventDefault();
-    console.log(Inputs);
+    console.log("submit");
+    try {
+      await signUpHandler(Inputs);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+    
   }
+
   return (
     <div className="shadow-black shadow-sm rounded-lg min-w-96 p-8 flex flex-col justify-center gap-8 mx-auto items-center bg-black">
       <h1 className="text-2xl font-bold">Register</h1>
