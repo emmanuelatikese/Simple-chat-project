@@ -7,13 +7,14 @@ const SenderMessage = async (req, res) => {
     const { id } = req.params
     const Sender = req.user;
     const { message } = req.body;
+    console.log(message);
     try{
         const Receiver = await User.findById(id);
         if (!Receiver) return res.status(404).json({ error: "User not found" });
         const messageModel = new Message({
             sender: Sender._id,
             receiver: Receiver._id,
-            message
+             message
         })
         if (messageModel){
             await messageModel.save();

@@ -15,6 +15,6 @@ const messages = new Schema({
         type: String,
         required: true
     }
-}, {timestamp: true})
+}, {timestamps: true})
 
 module.exports = model("Message", messages);
