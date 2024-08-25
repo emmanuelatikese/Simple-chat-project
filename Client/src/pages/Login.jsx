@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const Login = () => {
   const [Inputs, setInputs] = useState({username: "", password: ""});
-  const {LoginHandler} = LoginHooks();
+  const {LoginHandler, loading} = LoginHooks();
   
   const onSubmit = async(e) =>{
     e.preventDefault();
@@ -48,7 +48,7 @@ const Login = () => {
     <input type="password" className="grow" placeholder="Password" required value={Inputs.password} onChange={(e) => setInputs({...Inputs, password: e.target.value})}/>
     </label>
     <Link className="ml-0 text-sm font-bold hover:text-white" to={"/SignUp"} >{"Don't"} have an account? Click Here</Link>
-    <button className="btn btn-neutral w-60" onClick={(e) => onSubmit(e)}>Login</button>
+    <button className="btn btn-neutral w-60" onClick={(e) => onSubmit(e)} disabled={loading}>{loading ? <span className="loading loading-infinity loading-lg"></span> : "Login"}</button>
     </div>
   )
 }

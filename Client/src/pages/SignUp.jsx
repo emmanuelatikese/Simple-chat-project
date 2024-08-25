@@ -90,7 +90,7 @@ const SignUp = () => {
     </label>
     <CheckComponent ChangeGender={GenderHandler} GenderSelect={Inputs.gender}/>
     <Link className="ml-0 text-sm font-bold hover:text-white" to={"/Login"}>Already have an account? Click Here</Link>
-    <button className="btn btn-neutral w-60" onClick={(e) => onSubmit(e)}>SignUp</button>
+    <button className="btn btn-neutral w-60" onClick={(e) => onSubmit(e)} disabled={loading}>{loading ? <span className="loading loading-infinity loading-lg"></span> : "SignUp"}</button>
     </div>
   )
 }
