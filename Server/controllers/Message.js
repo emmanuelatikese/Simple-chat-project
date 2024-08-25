@@ -51,6 +51,7 @@ const ReceiveMessage = async (req, res) => {
         let conversation = await Conversation.findOne(
             {participants: {$all: [Sender._id, Receiver._id]}}
         ).populate("messages");
+        if (!conversation) return res.status(200).json([]);
     return res.status(200).json(conversation.messages);
 
     }

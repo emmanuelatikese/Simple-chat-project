@@ -11,7 +11,7 @@ const ChatBox = () => {
     <div className="bg-black border-solid flex flex-col w-96 py-5 gap-6">
     {selectConv == null ? <NoChat/> :
       <>
-      <Chatheader/>
+      <Chatheader username={selectConv.username}/>
       <ChatRoom/>
       <ChatTextinput/>
       </>
