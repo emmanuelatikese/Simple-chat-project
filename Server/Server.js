@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express();
+const {app, server} = require("./webSocket/socket");
 require('dotenv').config();
 const db = require('./db/db');
 const UsersRoute = require('./routes/Users');
@@ -15,7 +15,7 @@ app.use('/api/Auth', UsersRoute);
 app.use('/api/Msg', MessageRoute);
 app.use('/api/Users', AllUsersRoute);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     db().then(() => console.log('Mongodb is connected...'));
     console.log(`listening on port: ${PORT}...`);
 });

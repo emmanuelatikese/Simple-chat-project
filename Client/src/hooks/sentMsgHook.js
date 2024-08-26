@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import toast from "react-hot-toast";
 import  axios  from 'axios';
 import useConvStore from "../Utils/useZustand";
@@ -9,13 +9,15 @@ const sentMsgHook = () => {
 
 
     const sendMsgHandler = async(message) => {
+        setLoading(true);
         try {
-            setLoading(true);
+
             const res = await axios.post(`/api/Msg/send/${selectConv._id}`,{message});
             if (res.data.error){
                 throw new Error(res.data.error);
             }
             setMessages([...Messages, res.data]);
+            
         } catch (error) {
             toast.error(error.message);
         }

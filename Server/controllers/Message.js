@@ -1,6 +1,8 @@
 const User = require("../models/Users");
 const Message = require("../models/Messages");
 const Conversation = require("../models/Conversations");
+const { getReceiverId } = require("../webSocket/socket");
+const {io} = require("../webSocket/socket");
 
 
 const SenderMessage = async (req, res) => {
@@ -17,7 +19,6 @@ const SenderMessage = async (req, res) => {
              message
         })
         if (messageModel){
-            await messageModel.save();
             let conversation = await Conversation.findOne(
                 {participants: {$all: [Sender._id, Receiver._id]}}
             );
@@ -28,7 +29,14 @@ const SenderMessage = async (req, res) => {
                 });
             }
             conversation.messages.push(messageModel._id);
-            await conversation.save();
+
+            await Promise.all([messageModel.save(), conversation.save()])
+            const receiveId = getReceiverId(id);
+            if (receiveId) {
+                io.to(receiveId).emit("newMessage", messageModel);
+                // io.to(Sender._id).emit("message", messageModel);
+            }
+
             res.status(201).json({ messageModel });
         }
         else{

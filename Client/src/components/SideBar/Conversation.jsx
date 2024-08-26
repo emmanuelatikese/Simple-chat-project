@@ -7,7 +7,6 @@ const Conversation = ({profile, username, chat}) => {
   const {selectConv, setConv} = useConvStore();
   // eslint-disable-next-line react/prop-types
   const isOnline = onlineUsers.includes(chat._id);
-  console.log(onlineUsers);
   // eslint-disable-next-line react/prop-types
   const isSelect = selectConv?._id == chat._id;
   return (

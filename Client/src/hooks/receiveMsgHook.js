@@ -7,12 +7,17 @@ const receiveMsgHook = () => {
     const [loading, setLoading] = useState(false);
     const {selectConv, setMessages, Messages} = useConvStore();
 
-    const receiveMsgHandler = async () => {
+    
+    useEffect(() => {
+        const receiveMsgHandler = async () => {
         try {
             setLoading(true);
-            setMessages([]);
-            const res = await axios.get(`/api/Msg/receive/${selectConv._id}`)
-            setMessages(res.data);
+            const res = await axios.get(`/api/Msg/receive/${selectConv._id}`);
+            if (res.data.error){
+                throw new Error(res.data.error);
+            }
+            const newMsg = res.data;
+            setMessages(newMsg);
 
         } catch (error) {
             toast.error(error.message);
@@ -21,9 +26,9 @@ const receiveMsgHook = () => {
             setLoading(false);
         }
     }
-    useEffect(() => {
+
         if (selectConv?._id) receiveMsgHandler();
-    }, [selectConv, setMessages]);
+    }, [selectConv?._id, setMessages]);
     return {Messages, loading};
 };
 

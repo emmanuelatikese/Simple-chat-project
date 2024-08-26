@@ -4,24 +4,42 @@ import { useState } from "react";
 
 const ChatTextinput = () => {
   const { sendMsgHandler, loading } = sentMsgHook();
-  const [Text, setText] = useState("");
+  const [msg, setMsg] = useState("");
 
-  const onSend = async(e) => {
+  const onSend = async (e) => {
     e.preventDefault();
-    await sendMsgHandler(Text);
-    setText("");
-  }
+    if (!msg) return;
+    await sendMsgHandler(msg);
+    setMsg(""); 
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); 
+      onSend(e);
+    }
+  };
 
   return (
+    <form onSubmit={onSend}>
     <div>
       <label className="input input-bordered flex items-center gap-2">
-      <input type="text" value={Text} onChange={(e) => setText(e.target.value)} className="grow p-4 mx-auto text-sm" placeholder="Type a message" />
-        <button onClick={(e) => onSend(e)}>
+        <input
+          type="text"
+          value={msg}
+          onChange={(e) => setMsg(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="grow p-4 mx-auto text-sm"
+          placeholder="Type a message"
+        />
+        <button type="submit"  className="flex items-center">
           <IoMdSend />
         </button>
       </label>
     </div>
-  )
-}
+    </form>
+  );
+};
 
 export default ChatTextinput;
+
