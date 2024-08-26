@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const ChatTextinput = () => {
   const { sendMsgHandler, loading } = sentMsgHook();
-  const [Text, setText] = useState();
+  const [Text, setText] = useState("");
 
   const onSend = async(e) => {
     e.preventDefault();

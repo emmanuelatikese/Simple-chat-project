@@ -1,13 +1,14 @@
 import React from 'react'
 import { useAuthContext } from '../../context/AuthContext'
-import useConvStore from '../../Utils/useZustand'
+import useConvStore from '../../Utils/useZustand';
+import formatTimeWithAMPM from '../../Utils/timeformat';
 
 const MsgComp = ({message}) => {
       const {authUser} = useAuthContext();
       const currentUserId = authUser.id;
       const {selectConv} = useConvStore();
       const isCurrentUser = message.sender === currentUserId;
-
+      const Msgtime = formatTimeWithAMPM(message.createdAt);
     return <>
         {
             isCurrentUser?
@@ -20,7 +21,7 @@ const MsgComp = ({message}) => {
     </div>
   </div>
   <div className="chat-header">
-    <time className="text-xs opacity-50 text-white">12:46</time>
+    <time className="text-xs opacity-50 text-white">{Msgtime}</time>
   </div>
   <div className="chat-bubble">{message.message}</div>
 </div>
@@ -35,7 +36,7 @@ const MsgComp = ({message}) => {
     </div>
   </div>
   <div className="chat-header">
-    <time className="text-xs opacity-50 text-white">12:45</time>
+    <time className="text-xs opacity-50 text-white">{Msgtime}</time>
   </div>
   <div className="chat-bubble bg-sky-500 text-white">{message.message}</div>
 </div>
