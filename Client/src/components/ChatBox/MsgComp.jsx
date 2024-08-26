@@ -14,8 +14,9 @@ const MsgComp = ({ message}) => {
       const profile = isCurrentUser ? authUser?.profilePic : selectConv?.profilePic;
       const Msgtime = formatTimeWithAMPM(message.createdAt);
       const newMsg = message.message;
+      const shake = message.shake ? 'shake' : '' ;
     return <div>
-  <div className={`chat ${chatType}`}>
+  <div className={`chat ${chatType} `}>
   <div className="chat-image avatar">
     <div className="w-10 rounded-full">
       <img
@@ -24,10 +25,10 @@ const MsgComp = ({ message}) => {
     </div>
   </div>
   <div className="chat-header">
-    <time className="text-xs opacity-50 text-white">{Msgtime}</time>
+    <time className={`text-xs opacity-50 text-white `}>{Msgtime}</time>
   </div>
 
-  <div className={`chat-bubble ${backgroundColor}`}>{newMsg}</div>
+  <div className={`chat-bubble ${backgroundColor} ${shake}`}>{newMsg}</div>
 </div>
 
     </div>
