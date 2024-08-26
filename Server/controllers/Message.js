@@ -6,48 +6,43 @@ const {io} = require("../webSocket/socket");
 
 
 const SenderMessage = async (req, res) => {
-    const { id } = req.params
-    const Sender = req.user;
-    const { message } = req.body;
-    console.log(message);
-    try{
-        const Receiver = await User.findById(id);
-        if (!Receiver) return res.status(404).json({ error: "User not found" });
-        const messageModel = new Message({
-            sender: Sender._id,
-            receiver: Receiver._id,
-             message
-        })
-        if (messageModel){
-            let conversation = await Conversation.findOne(
-                {participants: {$all: [Sender._id, Receiver._id]}}
-            );
-            if (!conversation){
-                conversation = new Conversation({
-                    participants: [Sender._id, Receiver._id],
-                    messages: []
-                });
-            }
-            conversation.messages.push(messageModel._id);
+    try {
+        const { message } = req.body;
+        const { id: receiverId } = req.params;
+        const senderId = req.user._id;
+        let conversation = await Conversation.findOne({
+            participants: { $all: [senderId, receiverId] },
+        });
 
-            await Promise.all([messageModel.save(), conversation.save()])
-            const receiveId = getReceiverId(id);
-            if (receiveId) {
-                io.to(receiveId).emit("newMessage", messageModel);
-                // io.to(Sender._id).emit("message", messageModel);
-            }
+        if (!conversation) {
+            conversation = await Conversation.create({
+                participants: [senderId, receiverId],
+            });
+        }
 
-            res.status(201).json({ messageModel });
+        const newMessage = new Message({
+            sender: senderId,
+            receiver: receiverId,
+            message,
+        });
+
+        if (newMessage) {
+            conversation.messages.push(newMessage._id);
         }
-        else{
-            return res.status(400).json({ error: "Failed to send message" });
+
+        await Promise.all([conversation.save(), newMessage.save()]);
+
+        const receiverSocketId = getReceiverId(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage);
         }
+
+        res.status(201).json(newMessage);
+    } catch (error) {
+        console.log("Error in sendMessage controller: ", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
-    catch(error){
-        console.error(error);
-        res.status(500).json({error: "Server Error"});
-    }
-}
+};
 
 
 const ReceiveMessage = async (req, res) => {
